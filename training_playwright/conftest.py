@@ -1,15 +1,11 @@
-import pytest
-from playwright.sync_api import sync_playwright
 
 
-@pytest.fixture(scope="session")
-def setup_playwright(base_url):
-    print(f"starting setup_playwright into url {base_url} ")
-    with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=False)
-        page = browser.new_page()
-        # page.goto("https://www.saucedemo.com/")
-        yield page
-        page.close()
-        browser.close()
-        print("###Test end###")
+class SearchProductPage:
+    def __init__(self, page):
+        self.page = page
+        self.search_input = page.locator("[id='HeaderSearch--desktop_search_query']")
+
+    def search_product(self,text):
+        self.search_input.click()
+        self.search_input.fill(text)
+        self.search_input.press("Enter")
